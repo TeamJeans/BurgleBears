@@ -51,12 +51,10 @@ public class PlayerSpotting : MonoBehaviour
     {
 		if (CanSeePlayer())
 		{
-			spotLight.color = Color.red;
 			ChasePlayer();
 		}
 		else
 		{
-			spotLight.color = originalSpotLightColor;
 			GoBackToPatrol();
 		}
     }
@@ -80,12 +78,14 @@ public class PlayerSpotting : MonoBehaviour
 
 	private void ChasePlayer()
 	{
+		spotLight.color = Color.red;
 		patrol.enabled = false;
 		destination.enabled = true;
 	}
 
 	private void GoBackToPatrol()
 	{
+		spotLight.color = originalSpotLightColor;
 		destination.enabled = false;
 		patrol.enabled = true;
 	}
