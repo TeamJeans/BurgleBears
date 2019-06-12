@@ -8,6 +8,8 @@ public class PlayerSpotting : MonoBehaviour
 	[SerializeField] private Light spotLight;
 	[SerializeField] private float viewDistance;
 	[SerializeField] private LayerMask viewMask;
+	[SerializeField] private DetectionBar detectionBar;
+
 	private float viewAngle;
 	Transform player;
 	Color originalSpotLightColor;
@@ -44,18 +46,29 @@ public class PlayerSpotting : MonoBehaviour
     {
 		viewAngle = spotLight.spotAngle;
 		originalSpotLightColor = spotLight.color;
-    }
+	}
 
     // Update is called once per frame
     void Update()
     {
 		if (CanSeePlayer())
 		{
-			ChasePlayer();
+			detectionBar.FillBar();
+			patrol.enabled = false;
+
+			if (detectionBar.Full)
+			{
+				ChasePlayer();
+			}
 		}
 		else
 		{
-			GoBackToPatrol();
+			detectionBar.DepleteBar();
+
+			if (detectionBar.Depleted)
+			{
+				GoBackToPatrol();
+			}
 		}
     }
 
@@ -79,7 +92,6 @@ public class PlayerSpotting : MonoBehaviour
 	private void ChasePlayer()
 	{
 		spotLight.color = Color.red;
-		patrol.enabled = false;
 		destination.enabled = true;
 	}
 
