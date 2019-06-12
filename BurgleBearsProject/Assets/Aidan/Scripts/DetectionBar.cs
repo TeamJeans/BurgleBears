@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class DetectionBar : MonoBehaviour
 {
-	[SerializeField] private float timeForBarToFill = 1f;
+	[SerializeField] private float timeForBarToDeplete = 5f;
+	private float timeForBarToFill = 1f;
+	public float TimeForBarToFill { get { return timeForBarToFill; } set { timeForBarToFill = value; } }
 	private float elapsedFillTime = 0;
 	private float elapsedDepleteTime = 0;
 	[SerializeField] private Vector2 barEndPos = Vector2.zero;
@@ -42,8 +44,8 @@ public class DetectionBar : MonoBehaviour
 		elapsedFillTime = 0;
 
 		float percentageLeftToDeplete = Vector2.Distance(transform.localPosition, barStartPos) / Vector2.Distance(barStartPos, barEndPos);
-		transform.localPosition = Vector2.Lerp(transform.localPosition, barStartPos, 1 / (timeForBarToFill * percentageLeftToDeplete) * Time.deltaTime);
-		if (elapsedDepleteTime >= timeForBarToFill)
+		transform.localPosition = Vector2.Lerp(transform.localPosition, barStartPos, 1 / (timeForBarToDeplete * percentageLeftToDeplete) * Time.deltaTime);
+		if (elapsedDepleteTime >= timeForBarToDeplete)
 		{
 			Depleted = true;
 			elapsedDepleteTime = 0;

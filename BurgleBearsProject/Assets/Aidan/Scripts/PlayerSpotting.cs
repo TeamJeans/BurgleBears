@@ -9,6 +9,7 @@ public class PlayerSpotting : MonoBehaviour
 	[SerializeField] private float viewDistance;
 	[SerializeField] private LayerMask viewMask;
 	[SerializeField] private DetectionBar detectionBar;
+	[SerializeField] private float detectionRate = 4f;
 
 	private float viewAngle;
 	Transform player;
@@ -53,6 +54,7 @@ public class PlayerSpotting : MonoBehaviour
     {
 		if (CanSeePlayer())
 		{
+			detectionBar.TimeForBarToFill = (viewDistance - (viewDistance - Vector3.Distance(transform.position, player.position))) * (1/detectionRate);
 			detectionBar.FillBar();
 			patrol.enabled = false;
 
