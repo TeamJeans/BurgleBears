@@ -5,26 +5,37 @@ using Pathfinding;
 
 public class PlayerSpotting : MonoBehaviour
 {
-	[SerializeField] private Light spotLight;
-	[SerializeField] private float viewDistance;
+	[SerializeField] private Light spotLight = null;
+	[SerializeField] private float viewDistance = 0f;
 	[SerializeField] private LayerMask viewMask;
-	[SerializeField] private DetectionBar detectionBar;
+	[SerializeField] private DetectionBar detectionBar = null;
 	[SerializeField] private float detectionRate = 4f;
 
 	private float viewAngle;
 	Transform player;
 	Color originalSpotLightColor;
 
+	enum GuardType
+	{
+		PATROL_GUARD,
+		ALARM_GUARD
+	}
+
+	[SerializeField] private GuardType guardType = GuardType.PATROL_GUARD; // Patrol guard set by default
+
 	private Patrol patrol;
 	private AIDestinationSetter destination;
 
 	private void Awake()
 	{
-		// Find the patrol script on this object
-		patrol = GetComponent<Patrol>();
-		if (patrol == null)
+		if (guardType == GuardType.PATROL_GUARD)
 		{
-			Debug.Log("Patrol not found!");
+			// Find the patrol script on this object
+			patrol = GetComponent<Patrol>();
+			if (patrol == null)
+			{
+				Debug.Log("Patrol not found!");
+			}
 		}
 
 		// Find the AIDestinationSetter script on this object
@@ -34,8 +45,8 @@ public class PlayerSpotting : MonoBehaviour
 			Debug.Log("Destination not found!");
 		}
 
-		// Find the player through the AIDestinationSetter
-		player = destination.target;
+		// Find the player
+		player = GameObject.FindGameObjectWithTag("Player").transform;
 		if (player == null)
 		{
 			Debug.Log("Player not found!");
@@ -56,7 +67,16 @@ public class PlayerSpotting : MonoBehaviour
 		{
 			detectionBar.TimeForBarToFill = (viewDistance - (viewDistance - Vector3.Distance(transform.position, player.position))) * (1/detectionRate);
 			detectionBar.FillBar();
-			patrol.enabled = false;
+			switch (guardType)
+			{
+				case GuardType.PATROL_GUARD:
+					patrol.enabled = false;
+					break;
+				case GuardType.ALARM_GUARD:
+					break;
+				default:
+					break;
+			}
 
 			if (detectionBar.Full)
 			{
@@ -69,7 +89,16 @@ public class PlayerSpotting : MonoBehaviour
 
 			if (detectionBar.Depleted)
 			{
-				GoBackToPatrol();
+				switch (guardType)
+				{
+					case GuardType.PATROL_GUARD:
+						GoBackToPatrol();
+						break;
+					case GuardType.ALARM_GUARD:
+						break;
+					default:
+						break;
+				}
 			}
 		}
     }

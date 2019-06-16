@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	[SerializeField] private Text hunnyJarsText;
+	[SerializeField] private Text hunnyJarsText = null;
 	private int noOfHunnyJarsCollected = 0;
 
 	private void Update()

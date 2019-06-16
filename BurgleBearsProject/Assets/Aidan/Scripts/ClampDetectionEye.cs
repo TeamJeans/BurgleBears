@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ClampDetectionEye : MonoBehaviour
 {
-	[SerializeField] GameObject detectionEye;
+	[SerializeField] GameObject detectionEye = null;
 
     // Update is called once per frame
     void Update()
