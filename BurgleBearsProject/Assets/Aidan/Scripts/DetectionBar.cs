@@ -38,6 +38,11 @@ public class DetectionBar : MonoBehaviour
 		}
 	}
 
+	public void FillHalfBar()
+	{
+		transform.localPosition = (barStartPos + barEndPos)/2.0f;
+	}
+
 	public void DepleteBar()
 	{
 		Full = false;       // It shouldn't be full as we are starting to deplete the bar

@@ -9,10 +9,12 @@ public class PlayerSpotting : MonoBehaviour
 	[SerializeField] private float viewDistance = 0f;
 	[SerializeField] private LayerMask viewMask;
 	[SerializeField] private DetectionBar detectionBar = null;
+	public DetectionBar DetectionEyeBar { get { return detectionBar; } }
 	[SerializeField] private float detectionRate = 4f;
 
 	private float viewAngle;
 	Transform player;
+	public Transform Player { get { return player; } }
 	Color originalSpotLightColor;
 
 	enum GuardType

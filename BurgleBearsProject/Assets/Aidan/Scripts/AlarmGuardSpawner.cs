@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class AlarmGuardSpawner : MonoBehaviour
 {
 	private Transform spawnPoints;
 	private ObjectPooling alarmGuardPool;
 	private List<GameObject> activeGuards = new List<GameObject>();
+	private bool spawned = false;
 
 	private void Awake()
 	{
@@ -40,20 +42,32 @@ public class AlarmGuardSpawner : MonoBehaviour
 
 	public void Spawn()
 	{
-		foreach(Transform t in spawnPoints)
+		if (!spawned)
 		{
-			GameObject guard = alarmGuardPool.RetrieveInstance();
-			guard.transform.position = t.position;
-			activeGuards.Add(guard);
+			spawned = true;
+			foreach (Transform t in spawnPoints)
+			{
+				GameObject guardholder = alarmGuardPool.RetrieveInstance();
+				guardholder.transform.position = t.position;
+				GameObject guard = guardholder.transform.Find("AlarmGuard").gameObject;
+				guard.GetComponent<AIDestinationSetter>().target = guard.GetComponent<PlayerSpotting>().Player;
+				guard.GetComponent<AIDestinationSetter>().enabled = true;
+				guard.GetComponent<PlayerSpotting>().DetectionEyeBar.FillHalfBar();
+				activeGuards.Add(guardholder);
+			}
 		}
 	}
 
 	public void Despawn()
 	{
-		foreach (GameObject g in activeGuards)
+		if (spawned)
 		{
-			alarmGuardPool.DevolveInstance(g);
+			spawned = false;
+			foreach (GameObject g in activeGuards)
+			{
+				alarmGuardPool.DevolveInstance(g);
+			}
+			activeGuards.Clear();
 		}
-		activeGuards.Clear();
 	}
 }
