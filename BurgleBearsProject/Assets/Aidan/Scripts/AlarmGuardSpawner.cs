@@ -48,8 +48,8 @@ public class AlarmGuardSpawner : MonoBehaviour
 			foreach (Transform t in spawnPoints)
 			{
 				GameObject guardholder = alarmGuardPool.RetrieveInstance();
-				guardholder.transform.position = t.position;
 				GameObject guard = guardholder.transform.Find("AlarmGuard").gameObject;
+				guard.transform.position = t.position;
 				guard.GetComponent<AIDestinationSetter>().target = guard.GetComponent<PlayerSpotting>().Player;
 				guard.GetComponent<AIDestinationSetter>().enabled = true;
 				guard.GetComponent<PlayerSpotting>().DetectionEyeBar.FillHalfBar();
