@@ -35,9 +35,14 @@ public class AlarmGuardSpawner : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.X))
 		{
-			Despawn();
+			DespawnAll();
 		}
 		#endregion
+
+		if (spawned)
+		{
+
+		}
 	}
 
 	public void Spawn()
@@ -58,7 +63,7 @@ public class AlarmGuardSpawner : MonoBehaviour
 		}
 	}
 
-	public void Despawn()
+	public void DespawnAll()
 	{
 		if (spawned)
 		{
@@ -69,5 +74,10 @@ public class AlarmGuardSpawner : MonoBehaviour
 			}
 			activeGuards.Clear();
 		}
+	}
+
+	public void Despawn(GameObject g)
+	{
+		alarmGuardPool.DevolveInstance(g);
 	}
 }

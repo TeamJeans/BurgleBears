@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+	[SerializeField] private AlarmGuardSpawner spawner = null;
+	[SerializeField] private float range = 500f;
 	private LineRenderer lr;
-	private float range = 500f;
-	private Vector3 endPoint;
+	private Vector3 endPoint = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
-		lr = GetComponent<LineRenderer>();
+		lr = transform.Find("Graphics").GetComponent<LineRenderer>();
+		if (lr == null)
+		{
+			Debug.Log("Line renderer for laser is missing!");
+		}
     }
 
     // Update is called once per frame
     void Update()
     {
-		//lr.SetPosition(0, transform.position);
 		RaycastHit hit;
 		endPoint = transform.forward * range;
 		if (Physics.Raycast(transform.position, transform.forward, out hit))
@@ -25,7 +29,15 @@ public class Laser : MonoBehaviour
 			endPoint = transform.InverseTransformPoint(hit.point);
 			if (hit.collider)
 			{
-				lr.SetPosition(1, hit.point);
+				if (hit.collider.tag == "Player")
+				{
+					// Player has touched the laser, alarm the guards
+					spawner.Spawn();
+				}
+				else
+				{
+					lr.SetPosition(1, hit.point);
+				}
 			}
 		}
 		lr.SetPosition(1, endPoint);

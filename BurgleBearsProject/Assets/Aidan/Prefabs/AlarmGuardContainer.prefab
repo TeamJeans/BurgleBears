@@ -457,6 +457,7 @@ MonoBehaviour:
     m_Bits: 512
   detectionBar: {fileID: 4260425599396643300}
   detectionRate: 4
+  spawner: {fileID: 0}
   guardType: 1
 --- !u!1001 &1355369238223086403
 PrefabInstance:
@@ -579,6 +580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeForBarToDeplete
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3021686267479057063, guid: d21d8c4d53caa5c45a628c4e5976babe,
+        type: 3}
+      propertyPath: barStartPos.y
+      value: -71.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d21d8c4d53caa5c45a628c4e5976babe, type: 3}

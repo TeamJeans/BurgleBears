@@ -10,15 +10,9 @@ public class DetectionBar : MonoBehaviour
 	private float elapsedFillTime = 0;
 	private float elapsedDepleteTime = 0;
 	[SerializeField] private Vector2 barEndPos = Vector2.zero;
-	private Vector2 barStartPos = Vector2.zero;
+	[SerializeField] private Vector2 barStartPos = Vector2.zero;
 	public bool Full { get; private set; }
 	public bool Depleted { get; private set; }
-
-	// Start is called before the first frame update
-	void Start()
-	{
-		barStartPos = transform.localPosition;
-	}
 
 	public void FillBar()
 	{
@@ -40,7 +34,6 @@ public class DetectionBar : MonoBehaviour
 
 	public void FillHalfBar()
 	{
-		barStartPos = transform.localPosition;
 		Debug.Log("Bar Start Pos: " + barStartPos);
 		transform.localPosition = (barStartPos + barEndPos)/2.0f;
 	}
