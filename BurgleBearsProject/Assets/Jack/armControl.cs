@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class armControl : MonoBehaviour
 {
-    float rotx = 0;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private float rotx = 0;
+	[SerializeField] private HingeJointTarget hjt = null;
 
     // Update is called once per frame
     void Update()
@@ -24,8 +19,8 @@ public class armControl : MonoBehaviour
             rotx--;
         }
 
-
-        transform.Rotate(rotx,0,0);
+		hjt.TargetRotation += rotx;
+		transform.Rotate(rotx,0,0);
         rotx = 0;
     }
 
