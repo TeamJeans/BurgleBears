@@ -50,16 +50,9 @@ public class JointFollowAnimRot : MonoBehaviour
 		joint.projectionMode = JointProjectionMode.None;
 		joint.targetAngularVelocity = targetVel;
 		joint.configuredInWorldSpace = false;
-		joint.swapBodies = true;
+		//joint.swapBodies = true;
 
-		joint.angularXMotion = ConfigurableJointMotion.Limited;
-		joint.angularYMotion = ConfigurableJointMotion.Limited;
-		joint.angularZMotion = ConfigurableJointMotion.Limited;
-		joint.xMotion = ConfigurableJointMotion.Locked;
-		joint.yMotion = ConfigurableJointMotion.Locked;
-		joint.zMotion = ConfigurableJointMotion.Locked;
-
-		startingRotation = Quaternion.Inverse(target.localRotation);
+		startingRotation = transform.localRotation;
 	}
 
 	void LateUpdate()
@@ -67,6 +60,7 @@ public class JointFollowAnimRot : MonoBehaviour
 		if (invert)
 			joint.targetRotation = Quaternion.Inverse(target.localRotation * startingRotation);
 		else
-			joint.targetRotation = target.localRotation * startingRotation;
+			joint.SetTargetRotationLocal(target.localRotation, startingRotation);
+			//joint.targetRotation = target.localRotation * startingRotation;
 	}
 }
