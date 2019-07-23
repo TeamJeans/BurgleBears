@@ -7,23 +7,39 @@ public class ArmsController : MonoBehaviour
 {
 	[SerializeField] private GameObject leftArm = null;
 	[SerializeField] private GameObject rightArm = null;
+	private bool leftArmMovingUp = false;
+	private bool leftArmMovingDown = false;
+	private bool rightArmMovingUp = false;
+	private bool rightArmMovingDown = false;
+	private float totalLeftArmRotation = 0f;
+	private float totalRightArmRotation = 0f;
 
-	PlayerInput playerInput = null;
+
+	private PlayerInput playerInput = null;
+	[SerializeField] private JointFollowAnimRot leftArmFollow = null;
+	[SerializeField] private JointFollowAnimRot rightArmFollow = null;
 
 	private void Awake()
 	{
 		playerInput = new PlayerInput();
 
 		playerInput.Gameplay.RaiseLeftArm.performed += ctx => RaiseLeftArm();
+		playerInput.Gameplay.RaiseLeftArm.canceled += ctx => leftArmMovingUp = false;
 		playerInput.Gameplay.LowerLeftArm.performed += ctx => LowerLeftArm();
+		playerInput.Gameplay.LowerLeftArm.canceled += ctx => leftArmMovingDown = false;
 		playerInput.Gameplay.RaiseRightArm.performed += ctx => RaiseRightArm();
+		playerInput.Gameplay.RaiseRightArm.canceled += ctx => rightArmMovingUp = false;
 		playerInput.Gameplay.LowerRightArm.performed += ctx => LowerRightArm();
+		playerInput.Gameplay.LowerRightArm.canceled += ctx => rightArmMovingDown = false;
 
 	}
 
 	// Start is called before the first frame update
 	void Start()
     {
+		leftArmFollow.enabled = false;
+		rightArmFollow.enabled = false;
+
 		if (leftArm == null)
 		{
 			Debug.Log("Left arm missing from Arm controller script");
@@ -35,36 +51,71 @@ public class ArmsController : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		if (leftArmMovingDown || leftArmMovingUp)
+		{
+			leftArmFollow.enabled = true;
+		}
+		else
+		{
+			leftArmFollow.enabled = false;
+			leftArm.transform.rotation = Quaternion.identity;
+			leftArm.transform.Rotate(0,0,70);
+			totalLeftArmRotation = 70f;
+		}
+
+		if (rightArmMovingDown || rightArmMovingUp)
+		{
+			rightArmFollow.enabled = true;
+		}
+		else
+		{
+			rightArmFollow.enabled = false;
+			rightArm.transform.rotation = Quaternion.identity;
+			rightArm.transform.Rotate(0, 0, -70);
+			totalRightArmRotation = -70f;
+		}
+	}
+
 	private void RaiseLeftArm()
 	{
-		float rot = 0;
-		rot--;
-		leftArm.transform.Rotate(0, 0, rot);
-		rot = 0f;
+		leftArmMovingUp = true;
+		if (totalLeftArmRotation > -90)
+		{
+			leftArm.transform.Rotate(0, 0, -1);
+			totalLeftArmRotation--;
+		}
 	}
 
 	private void LowerLeftArm()
 	{
-		float rot = 0;
-		rot++;
-		leftArm.transform.Rotate(0, 0, rot);
-		rot = 0f;
+		leftArmMovingDown = true;
+		if (totalLeftArmRotation < 90)
+		{
+			leftArm.transform.Rotate(0, 0, 1);
+			totalLeftArmRotation++;
+		}
 	}
 
 	private void RaiseRightArm()
 	{
-		float rot = 0;
-		rot++;
-		rightArm.transform.Rotate(0, 0, rot);
-		rot = 0f;
+		rightArmMovingUp = true;
+		if (totalRightArmRotation < 90)
+		{
+			rightArm.transform.Rotate(0, 0, 1);
+			totalRightArmRotation++;
+		}
 	}
 
 	private void LowerRightArm()
 	{
-		float rot = 0;
-		rot--;
-		rightArm.transform.Rotate(0, 0, rot);
-		rot = 0f;
+		rightArmMovingDown = true;
+		if (totalRightArmRotation > -90)
+		{
+			rightArm.transform.Rotate(0, 0, -1);
+			totalRightArmRotation--;
+		}
 	}
 
 	private void OnEnable()

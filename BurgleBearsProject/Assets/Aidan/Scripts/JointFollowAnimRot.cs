@@ -25,9 +25,9 @@ public class JointFollowAnimRot : MonoBehaviour
 	{
 		invert = false;
 
-		torqueForce = 500f;
+		torqueForce = 100f;
 		angularDamping = 0.0f;
-		maxForce = 500f;
+		maxForce = 100f;
 
 		springForce = 0f;
 		springDamping = 0f;
@@ -58,9 +58,50 @@ public class JointFollowAnimRot : MonoBehaviour
 	void LateUpdate()
 	{
 		if (invert)
-			joint.targetRotation = Quaternion.Inverse(target.localRotation * startingRotation);
+			joint.SetTargetRotationLocal(Quaternion.Inverse(target.localRotation), Quaternion.Inverse(startingRotation));
+			//joint.targetRotation = Quaternion.Inverse(target.localRotation * startingRotation);
 		else
 			joint.SetTargetRotationLocal(target.localRotation, startingRotation);
 			//joint.targetRotation = target.localRotation * startingRotation;
+	}
+
+	private void OnEnable()
+	{
+		joint = gameObject.GetComponent<ConfigurableJoint>();
+
+		drive.positionSpring = torqueForce;
+		drive.positionDamper = angularDamping;
+		drive.maximumForce = maxForce;
+
+		joint.slerpDrive = drive;
+
+		joint.linearLimitSpring = spring;
+		joint.rotationDriveMode = RotationDriveMode.Slerp;
+		joint.projectionMode = JointProjectionMode.None;
+		joint.targetAngularVelocity = targetVel;
+		joint.configuredInWorldSpace = false;
+		//joint.swapBodies = true;
+
+		startingRotation = transform.localRotation;
+	}
+
+	private void OnDisable()
+	{
+		joint = gameObject.GetComponent<ConfigurableJoint>();
+
+		drive.positionSpring = 0;
+		drive.positionDamper = 0;
+		drive.maximumForce = 0;
+
+		joint.slerpDrive = drive;
+
+		joint.linearLimitSpring = spring;
+		joint.rotationDriveMode = RotationDriveMode.Slerp;
+		joint.projectionMode = JointProjectionMode.None;
+		joint.targetAngularVelocity = targetVel;
+		joint.configuredInWorldSpace = false;
+		//joint.swapBodies = true;
+
+		//startingRotation = transform.localRotation;
 	}
 }
