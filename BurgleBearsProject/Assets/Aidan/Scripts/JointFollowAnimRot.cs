@@ -29,7 +29,7 @@ public class JointFollowAnimRot : MonoBehaviour
 		angularDamping = 0.0f;
 		maxForce = 100f;
 
-		springForce = 0f;
+		springForce = 100f;
 		springDamping = 0f;
 
 		targetVel = new Vector3(0f, 0f, 0f);
@@ -59,10 +59,10 @@ public class JointFollowAnimRot : MonoBehaviour
 	{
 		if (invert)
 			joint.SetTargetRotationLocal(Quaternion.Inverse(target.localRotation), Quaternion.Inverse(startingRotation));
-			//joint.targetRotation = Quaternion.Inverse(target.localRotation * startingRotation);
+		//joint.targetRotation = Quaternion.Inverse(target.localRotation * startingRotation);
 		else
 			joint.SetTargetRotationLocal(target.localRotation, startingRotation);
-			//joint.targetRotation = target.localRotation * startingRotation;
+			//joint.targetRotation = target.rotation * startingRotation;
 	}
 
 	private void OnEnable()
@@ -100,8 +100,5 @@ public class JointFollowAnimRot : MonoBehaviour
 		joint.projectionMode = JointProjectionMode.None;
 		joint.targetAngularVelocity = targetVel;
 		joint.configuredInWorldSpace = false;
-		//joint.swapBodies = true;
-
-		//startingRotation = transform.localRotation;
 	}
 }

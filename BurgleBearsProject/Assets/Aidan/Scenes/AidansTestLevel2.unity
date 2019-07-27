@@ -4833,11 +4833,11 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_LowAngularXLimit:
-    limit: -94.29288
+    limit: 38.625694
     bounciness: 0
     contactDistance: 0
   m_HighAngularXLimit:
-    limit: 67.68024
+    limit: 100.36447
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
@@ -4894,7 +4894,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 0
+  m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!54 &1165281427

@@ -61,7 +61,7 @@ public class ArmsController : MonoBehaviour
 		{
 			leftArmFollow.enabled = false;
 			leftArm.transform.rotation = Quaternion.identity;
-			leftArm.transform.Rotate(0,0,70);
+			leftArm.transform.Rotate(0,70,70);
 			totalLeftArmRotation = 70f;
 		}
 
@@ -73,7 +73,7 @@ public class ArmsController : MonoBehaviour
 		{
 			rightArmFollow.enabled = false;
 			rightArm.transform.rotation = Quaternion.identity;
-			rightArm.transform.Rotate(0, 0, -70);
+			rightArm.transform.Rotate(0, -70, -70);
 			totalRightArmRotation = -70f;
 		}
 	}
