@@ -7,6 +7,9 @@ public class ArmsController : MonoBehaviour
 {
 	[SerializeField] private GameObject leftArm = null;
 	[SerializeField] private GameObject rightArm = null;
+	private JointSpring leftArmSpring;
+	private JointSpring rightArmSpring;
+
 	private bool leftArmMovingUp = false;
 	private bool leftArmMovingDown = false;
 	private bool rightArmMovingUp = false;
@@ -14,13 +17,28 @@ public class ArmsController : MonoBehaviour
 	private float totalLeftArmRotation = 0f;
 	private float totalRightArmRotation = 0f;
 
-
 	private PlayerInput playerInput = null;
-	[SerializeField] private JointFollowAnimRot leftArmFollow = null;
-	[SerializeField] private JointFollowAnimRot rightArmFollow = null;
 
 	private void Awake()
 	{
+		if (leftArm == null)
+		{
+			Debug.Log("Left arm missing from Arm controller script");
+		}
+		else
+		{
+			leftArmSpring = leftArm.GetComponent<HingeJoint>().spring;
+		}
+
+		if (rightArm == null)
+		{
+			Debug.Log("Right arm missing from Arm controller script");
+		}
+		else
+		{
+			rightArmSpring = rightArm.GetComponent<HingeJoint>().spring;
+		}
+
 		playerInput = new PlayerInput();
 
 		playerInput.Gameplay.RaiseLeftArm.performed += ctx => RaiseLeftArm();
@@ -34,87 +52,65 @@ public class ArmsController : MonoBehaviour
 
 	}
 
-	// Start is called before the first frame update
-	void Start()
-    {
-		leftArmFollow.enabled = false;
-		rightArmFollow.enabled = false;
-
-		if (leftArm == null)
-		{
-			Debug.Log("Left arm missing from Arm controller script");
-		}
-
-		if (rightArm == null)
-		{
-			Debug.Log("Right arm missing from Arm controller script");
-		}
-	}
-
 	private void Update()
 	{
+		leftArm.GetComponent<HingeJoint>().spring = leftArmSpring;
+		rightArm.GetComponent<HingeJoint>().spring = rightArmSpring;
+
 		if (leftArmMovingDown || leftArmMovingUp)
 		{
-			leftArmFollow.enabled = true;
+			leftArm.GetComponent<HingeJoint>().useSpring = true;
 		}
 		else
 		{
-			leftArmFollow.enabled = false;
-			leftArm.transform.rotation = Quaternion.identity;
-			leftArm.transform.Rotate(0,70,70);
-			totalLeftArmRotation = 70f;
+			leftArm.GetComponent<HingeJoint>().useSpring = false;
+			leftArmSpring.targetPosition = 1;
 		}
 
 		if (rightArmMovingDown || rightArmMovingUp)
 		{
-			rightArmFollow.enabled = true;
+			rightArm.GetComponent<HingeJoint>().useSpring = true;
 		}
 		else
 		{
-			rightArmFollow.enabled = false;
-			rightArm.transform.rotation = Quaternion.identity;
-			rightArm.transform.Rotate(0, -70, -70);
-			totalRightArmRotation = -70f;
+			rightArm.GetComponent<HingeJoint>().useSpring = false;
+			rightArmSpring.targetPosition = 1;
 		}
 	}
 
 	private void RaiseLeftArm()
 	{
 		leftArmMovingUp = true;
-		if (totalLeftArmRotation > -90)
+		if (leftArmSpring.targetPosition > leftArm.GetComponent<HingeJoint>().limits.min)
 		{
-			leftArm.transform.Rotate(0, 0, -1);
-			totalLeftArmRotation--;
+			leftArmSpring.targetPosition -= 1;
 		}
 	}
 
 	private void LowerLeftArm()
 	{
 		leftArmMovingDown = true;
-		if (totalLeftArmRotation < 90)
+		if (leftArmSpring.targetPosition < leftArm.GetComponent<HingeJoint>().limits.max)
 		{
-			leftArm.transform.Rotate(0, 0, 1);
-			totalLeftArmRotation++;
+			leftArmSpring.targetPosition += 1;
 		}
 	}
 
 	private void RaiseRightArm()
 	{
 		rightArmMovingUp = true;
-		if (totalRightArmRotation < 90)
+		if (rightArmSpring.targetPosition < rightArm.GetComponent<HingeJoint>().limits.max)
 		{
-			rightArm.transform.Rotate(0, 0, 1);
-			totalRightArmRotation++;
+			rightArmSpring.targetPosition += 1;
 		}
 	}
 
 	private void LowerRightArm()
 	{
 		rightArmMovingDown = true;
-		if (totalRightArmRotation > -90)
+		if (rightArmSpring.targetPosition > rightArm.GetComponent<HingeJoint>().limits.min)
 		{
-			rightArm.transform.Rotate(0, 0, -1);
-			totalRightArmRotation--;
+			rightArmSpring.targetPosition -= 1;
 		}
 	}
 
