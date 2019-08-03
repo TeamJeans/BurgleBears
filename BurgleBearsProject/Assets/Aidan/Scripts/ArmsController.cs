@@ -10,10 +10,10 @@ public class ArmsController : MonoBehaviour
 	private JointSpring leftArmSpring;
 	private JointSpring rightArmSpring;
 
-	private bool leftArmMovingUp = false;
-	private bool leftArmMovingDown = false;
-	private bool rightArmMovingUp = false;
-	private bool rightArmMovingDown = false;
+	public bool LeftArmMovingUp { get; private set; } = false;
+	public bool LeftArmMovingDown { get; private set; } = false;
+	public bool RightArmMovingUp { get; private set; } = false;
+	public bool RightArmMovingDown { get; private set; } = false;
 	private float totalLeftArmRotation = 0f;
 	private float totalRightArmRotation = 0f;
 
@@ -42,13 +42,13 @@ public class ArmsController : MonoBehaviour
 		playerInput = new PlayerInput();
 
 		playerInput.Gameplay.RaiseLeftArm.performed += ctx => RaiseLeftArm();
-		playerInput.Gameplay.RaiseLeftArm.canceled += ctx => leftArmMovingUp = false;
+		playerInput.Gameplay.RaiseLeftArm.canceled += ctx => LeftArmMovingUp = false;
 		playerInput.Gameplay.LowerLeftArm.performed += ctx => LowerLeftArm();
-		playerInput.Gameplay.LowerLeftArm.canceled += ctx => leftArmMovingDown = false;
+		playerInput.Gameplay.LowerLeftArm.canceled += ctx => LeftArmMovingDown = false;
 		playerInput.Gameplay.RaiseRightArm.performed += ctx => RaiseRightArm();
-		playerInput.Gameplay.RaiseRightArm.canceled += ctx => rightArmMovingUp = false;
+		playerInput.Gameplay.RaiseRightArm.canceled += ctx => RightArmMovingUp = false;
 		playerInput.Gameplay.LowerRightArm.performed += ctx => LowerRightArm();
-		playerInput.Gameplay.LowerRightArm.canceled += ctx => rightArmMovingDown = false;
+		playerInput.Gameplay.LowerRightArm.canceled += ctx => RightArmMovingDown = false;
 
 	}
 
@@ -57,7 +57,7 @@ public class ArmsController : MonoBehaviour
 		leftArm.GetComponent<HingeJoint>().spring = leftArmSpring;
 		rightArm.GetComponent<HingeJoint>().spring = rightArmSpring;
 
-		if (leftArmMovingDown || leftArmMovingUp)
+		if (LeftArmMovingDown || LeftArmMovingUp)
 		{
 			leftArm.GetComponent<HingeJoint>().useSpring = true;
 		}
@@ -67,7 +67,7 @@ public class ArmsController : MonoBehaviour
 			leftArmSpring.targetPosition = 1;
 		}
 
-		if (rightArmMovingDown || rightArmMovingUp)
+		if (RightArmMovingDown || RightArmMovingUp)
 		{
 			rightArm.GetComponent<HingeJoint>().useSpring = true;
 		}
@@ -80,7 +80,7 @@ public class ArmsController : MonoBehaviour
 
 	private void RaiseLeftArm()
 	{
-		leftArmMovingUp = true;
+		LeftArmMovingUp = true;
 		if (leftArmSpring.targetPosition > leftArm.GetComponent<HingeJoint>().limits.min)
 		{
 			leftArmSpring.targetPosition -= 1;
@@ -89,7 +89,7 @@ public class ArmsController : MonoBehaviour
 
 	private void LowerLeftArm()
 	{
-		leftArmMovingDown = true;
+		LeftArmMovingDown = true;
 		if (leftArmSpring.targetPosition < leftArm.GetComponent<HingeJoint>().limits.max)
 		{
 			leftArmSpring.targetPosition += 1;
@@ -98,7 +98,7 @@ public class ArmsController : MonoBehaviour
 
 	private void RaiseRightArm()
 	{
-		rightArmMovingUp = true;
+		RightArmMovingUp = true;
 		if (rightArmSpring.targetPosition < rightArm.GetComponent<HingeJoint>().limits.max)
 		{
 			rightArmSpring.targetPosition += 1;
@@ -107,7 +107,7 @@ public class ArmsController : MonoBehaviour
 
 	private void LowerRightArm()
 	{
-		rightArmMovingDown = true;
+		RightArmMovingDown = true;
 		if (rightArmSpring.targetPosition > rightArm.GetComponent<HingeJoint>().limits.min)
 		{
 			rightArmSpring.targetPosition -= 1;
