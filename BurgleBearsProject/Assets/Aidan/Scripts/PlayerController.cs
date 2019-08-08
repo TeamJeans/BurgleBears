@@ -9,16 +9,19 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private float gravityScale = 0f;
 	[SerializeField] private float rotateSpeed = 0f;
 	[SerializeField] private Transform pivot = null;
-	private Rigidbody rb;
+	[SerializeField] private GameObject playerModel = null;
+	[SerializeField] private Animator legAnimator = null;
+	private CharacterController controller;
 	private Vector3 moveDir = Vector3.zero;
+
 
 	// Use this for initialization
 	void Awake ()
 	{
-		rb = GetComponent<Rigidbody>();
-		if (rb == null)
+		controller = GetComponent<CharacterController>();
+		if (controller == null)
 		{
-			Debug.Log("RigidBody not found in player controller script!");
+			Debug.Log("controller not found in player controller script!");
 		}
 	}
 
@@ -35,15 +38,23 @@ public class PlayerController : MonoBehaviour {
 		moveDir.y += (Physics.gravity.y * gravityScale * Time.deltaTime);
 
 		// Move the player
-		rb.AddForce(moveDir);
+		controller.Move(moveDir * Time.deltaTime);
 
 		// Move the player in different directions depending on the camera's look direction
 		if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
 		{
-			transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y,0f);
+			transform.rotation = Quaternion.Euler(0f, pivot.rotation.eulerAngles.y, 0f);
 			Quaternion newRotation = Quaternion.LookRotation(new Vector3(moveDir.x, 0f, moveDir.z));
-			//rb.MoveRotation(newRotation);
-			//Quaternion.Slerp(transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+			playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+		}
+
+		if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
+		{
+			legAnimator.SetFloat("Speed", .5f);
+		}
+		else
+		{
+			legAnimator.SetFloat("Speed", 0f);
 		}
 	}
 }
