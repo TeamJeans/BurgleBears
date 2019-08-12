@@ -12,6 +12,7 @@ public class PlayerSpotting : MonoBehaviour
 	public DetectionBar DetectionEyeBar { get { return detectionBar; } }
 	[SerializeField] private float detectionRate = 4f;
 	[SerializeField] private AlarmGuardSpawner spawner = null;
+	public AlarmGuardSpawner Spawner { get { return spawner; } set { spawner = value; } }
 
 	private float viewAngle;
 	Transform player;
@@ -98,7 +99,7 @@ public class PlayerSpotting : MonoBehaviour
 						GoBackToPatrol();
 						break;
 					case GuardType.ALARM_GUARD:
-						spawner.Despawn(this.gameObject);
+						spawner.Despawn(transform.parent.gameObject);
 						break;
 					default:
 						break;

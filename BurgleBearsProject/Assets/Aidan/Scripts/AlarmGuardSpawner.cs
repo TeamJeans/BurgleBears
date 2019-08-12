@@ -58,6 +58,7 @@ public class AlarmGuardSpawner : MonoBehaviour
 				guard.GetComponent<AIDestinationSetter>().target = guard.GetComponent<PlayerSpotting>().Player;
 				guard.GetComponent<AIDestinationSetter>().enabled = true;
 				guard.GetComponent<PlayerSpotting>().DetectionEyeBar.FillHalfBar();
+				guard.GetComponent<PlayerSpotting>().Spawner = this;
 				activeGuards.Add(guardholder);
 			}
 		}
