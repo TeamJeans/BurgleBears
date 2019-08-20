@@ -137,4 +137,11 @@ public class PlayerSpotting : MonoBehaviour
 		destination.enabled = false;
 		patrol.enabled = true;
 	}
+
+	public void LaserTripped()
+	{
+		detectionBar.FillHalfBar();
+		patrol.enabled = false;
+		ChasePlayer();
+	}
 }

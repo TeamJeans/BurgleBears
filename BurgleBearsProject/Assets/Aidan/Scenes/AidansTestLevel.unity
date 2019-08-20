@@ -205,6 +205,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2011184410}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &227627868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9173458800321527114, guid: 92942d6d2e0b0214080f5b2ae35571ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 9173458801824433084}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013bf33a9d9c0e74bbdc89267a97c4d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &266332937
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +278,7 @@ Transform:
   - {fileID: 1508223849}
   - {fileID: 1658194576}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &313316919
 Rigidbody:
@@ -1280,6 +1292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 2122519298}
+  guardsInRoom:
+  - {fileID: 227627868}
   pathTransform: {fileID: 448148281}
   range: 500
   disabledTime: 5
@@ -1864,7 +1878,7 @@ Transform:
   - {fileID: 367717048}
   - {fileID: 1619247268}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2122519298
 MonoBehaviour:

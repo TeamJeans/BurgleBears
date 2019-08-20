@@ -5,6 +5,7 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
 	[SerializeField] private AlarmGuardSpawner spawner = null;
+	[SerializeField] private PlayerSpotting[] guardsInRoom;
 	[SerializeField] Transform pathTransform = null;
 	[SerializeField] private float range = 500f;
 	[SerializeField] private float disabledTime = 0f;
@@ -105,8 +106,7 @@ public class Laser : MonoBehaviour
 					if (hit.collider.tag == "Player")
 					{
 						// Player has touched the laser, alarm the guards
-						spawner.Spawn();
-						laserIsActive = false;
+						AlarmTheGuards();
 					}
 					else
 					{
@@ -174,8 +174,7 @@ public class Laser : MonoBehaviour
 						if (!colourChanged)
 						{
 							// Player has touched the laser, alarm the guards
-							spawner.Spawn();
-							laserIsActive = false;
+							AlarmTheGuards();
 						}
 					}
 					else
@@ -240,6 +239,19 @@ public class Laser : MonoBehaviour
 			{
 				currentNode = 0;
 			}
+		}
+	}
+
+	private void AlarmTheGuards()
+	{
+		// Spawn new guards that will search for the player
+		spawner.Spawn();
+		laserIsActive = false;
+
+		// Make the patrol guards in the room start looking for the player
+		foreach(PlayerSpotting pS in guardsInRoom)
+		{
+			pS.LaserTripped();
 		}
 	}
 }

@@ -21,10 +21,10 @@ public class HandGrab : MonoBehaviour
 	{
 		if (grabableObjectsMask == (grabableObjectsMask | (1 << other.gameObject.layer)))
 		{
-			Debug.Log(other.gameObject.layer + " Touched");
 			if (!attached)
 			{
 				other.gameObject.transform.SetParent(transform);
+
 				other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 				connectedGameObject = other.gameObject;
 				attached = true;
