@@ -9,6 +9,7 @@ public class AlarmGuardSpawner : MonoBehaviour
 	private ObjectPooling alarmGuardPool;
 	private List<GameObject> activeGuards = new List<GameObject>();
 	private bool spawned = false;
+	public bool Spawned { get { return spawned; } }
 
 	private void Awake()
 	{
@@ -80,5 +81,17 @@ public class AlarmGuardSpawner : MonoBehaviour
 	public void Despawn(GameObject g)
 	{
 		alarmGuardPool.DevolveInstance(g);
+
+		int noOfGuardsLeft = 0;
+
+		foreach (GameObject guard in activeGuards)
+		{
+			noOfGuardsLeft++;
+		}
+
+		if (noOfGuardsLeft == 0)
+		{
+			spawned = false;
+		}
 	}
 }

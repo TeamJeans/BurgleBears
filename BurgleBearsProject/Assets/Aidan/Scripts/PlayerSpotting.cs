@@ -18,11 +18,13 @@ public class PlayerSpotting : MonoBehaviour
 	Transform player;
 	public Transform Player { get { return player; } }
 	Color originalSpotLightColor;
+	public bool ActivatedAlarm { get; set; } = false;
 
 	enum GuardType
 	{
 		PATROL_GUARD,
-		ALARM_GUARD
+		ALARM_GUARD,
+		SCARED_PATROL_GUARD
 	}
 
 	[SerializeField] private GuardType guardType = GuardType.PATROL_GUARD; // Patrol guard set by default
@@ -32,7 +34,7 @@ public class PlayerSpotting : MonoBehaviour
 
 	private void Awake()
 	{
-		if (guardType == GuardType.PATROL_GUARD)
+		if (guardType == GuardType.PATROL_GUARD || guardType == GuardType.SCARED_PATROL_GUARD)
 		{
 			// Find the patrol script on this object
 			patrol = GetComponent<Patrol>();
@@ -78,13 +80,16 @@ public class PlayerSpotting : MonoBehaviour
 					break;
 				case GuardType.ALARM_GUARD:
 					break;
+				case GuardType.SCARED_PATROL_GUARD:
+					patrol.enabled = false;
+					break;
 				default:
 					break;
 			}
 
 			if (detectionBar.Full)
 			{
-				ChasePlayer();
+				ChaseTarget();
 			}
 		}
 		else
@@ -100,6 +105,12 @@ public class PlayerSpotting : MonoBehaviour
 						break;
 					case GuardType.ALARM_GUARD:
 						spawner.Despawn(transform.parent.gameObject);
+						break;
+					case GuardType.SCARED_PATROL_GUARD:
+						if (!ActivatedAlarm)
+						{
+							GoBackToPatrol();
+						}
 						break;
 					default:
 						break;
@@ -125,7 +136,7 @@ public class PlayerSpotting : MonoBehaviour
 		return false;
 	}
 
-	private void ChasePlayer()
+	private void ChaseTarget()
 	{
 		spotLight.color = Color.red;
 		destination.enabled = true;
@@ -142,6 +153,6 @@ public class PlayerSpotting : MonoBehaviour
 	{
 		detectionBar.FillHalfBar();
 		patrol.enabled = false;
-		ChasePlayer();
+		ChaseTarget();
 	}
 }
