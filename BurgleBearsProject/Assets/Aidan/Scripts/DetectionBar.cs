@@ -34,7 +34,6 @@ public class DetectionBar : MonoBehaviour
 
 	public void FillHalfBar()
 	{
-		Debug.Log("Bar Start Pos: " + barStartPos);
 		transform.localPosition = (barStartPos + barEndPos)/2.0f;
 	}
 

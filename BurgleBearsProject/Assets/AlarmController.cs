@@ -33,6 +33,7 @@ public class AlarmController : MonoBehaviour
 		if (!spawner.Spawned && alarmActivated)
 		{
 			alarmActivated = false;
+			Debug.Log("Alarm deactivated!");
 			scaredGuard.GetComponentInParent<PlayerSpotting>().ActivatedAlarm = false;
 			scaredGuard = null;
 		}

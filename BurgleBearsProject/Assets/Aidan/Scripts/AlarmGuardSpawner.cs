@@ -86,9 +86,13 @@ public class AlarmGuardSpawner : MonoBehaviour
 
 		foreach (GameObject guard in activeGuards)
 		{
-			noOfGuardsLeft++;
+			if (guard.activeSelf)
+			{
+				noOfGuardsLeft++;
+			}
 		}
 
+		Debug.Log("No of guards: " + noOfGuardsLeft);
 		if (noOfGuardsLeft == 0)
 		{
 			spawned = false;

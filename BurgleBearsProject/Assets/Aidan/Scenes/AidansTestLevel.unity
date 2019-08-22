@@ -2368,6 +2368,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyDetectionEyeUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3021686267479057063, guid: d21d8c4d53caa5c45a628c4e5976babe,
+        type: 3}
+      propertyPath: barStartPos.y
+      value: -71.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3021686268163117849, guid: d21d8c4d53caa5c45a628c4e5976babe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2472,11 +2477,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3021686267479057063, guid: d21d8c4d53caa5c45a628c4e5976babe,
-        type: 3}
-      propertyPath: barStartPos.y
-      value: -71.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d21d8c4d53caa5c45a628c4e5976babe, type: 3}
@@ -3062,7 +3062,7 @@ MonoBehaviour:
   detectionBar: {fileID: 452220556}
   detectionRate: 4
   spawner: {fileID: 0}
-  guardType: 0
+  guardType: 2
 --- !u!114 &7442440679595961766
 MonoBehaviour:
   m_ObjectHideFlags: 0
